@@ -1,0 +1,35 @@
+<div class="container-fluid my-3">
+    <div class="row">
+        <div class="col-md-12 vcenter">
+          <h2>Todo List</h2>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-md-12">
+        <div class="vcenter">
+          <input type="text" class="inputstyle" [(ngModel)]="newTodo" placeholder="Add a new todo" #inputValue />
+          <button class="btn btn-primary" (click)="addTodo(newTodo)">Add</button>
+        </div>
+
+        <ul class="list-group vcenter mt-3">
+          <li class="list-group-item vcenter mt-2" style="width: 14%;"
+            *ngFor="let todo of todos; let i = index">
+            <div class="margin-right">
+              <span>{{todo}}</span>
+            </div>
+            <div class="action ml-2">
+              <button class="btn btn-danger mr-1" (click)="removeTodo(i)">
+                <i class="fa fa-times"></i>
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+  </div>
+</div>
+
+

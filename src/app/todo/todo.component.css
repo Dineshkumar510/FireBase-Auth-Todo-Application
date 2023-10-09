@@ -1,0 +1,17 @@
+.vcenter{
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.margin-right{
+  margin-right: 4rem;
+}
+
+.inputstyle{
+  height: 34px;
+  margin-right: 10px;
+  border-radius: 5px;
+  width: 32%;
+}
+

@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="row">
+      <div class="col-md-12">
+          <div class="row center-content">
+              <div class="card vcenter col-md-4 p-4 box-shadow">
+                <h4 class="center-content my-4">Login Form</h4>
+                <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input type="email" class="form-control" name="email" ngModel required email>
+                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" ngModel required minlength="6">
+                  </div>
+                  <div class="button center-content">
+                    <button type="submit" class="btn btn-primary" [disabled]="!authForm.valid">Login</button>
+                  </div>
+                  <div class="center-content mt-3">
+                    <p>Not Register Yet? <a href="/register">Register</a></p>
+                  </div>
+                </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+

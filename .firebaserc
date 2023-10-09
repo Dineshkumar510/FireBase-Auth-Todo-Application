@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "angular---todo-interview-test": {
+      "hosting": {
+        "Task": [
+          "angular---todo-interview-test"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "angular---todo-interview-test"
+  }
+}
