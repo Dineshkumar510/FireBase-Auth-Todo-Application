@@ -4,10 +4,13 @@ import {TodoComponent} from './todo/todo.component';
 import {AuthComponent} from './auth/auth.component';
 import {RegisterComponent} from './register/register.component';
 import {NotfoundComponent} from './notfound/notfound.component';
-
+import {AuthGuard} from './auth/auth.guard';
 const routes: Routes = [
   {path: '', redirectTo:'login', pathMatch: 'full'},
-  {path: 'todo', component:TodoComponent},
+  {
+    path: 'todo', component:TodoComponent,
+    canActivate: [AuthGuard],
+  },
   {path: 'login', component:AuthComponent},
   {path: 'register', component:RegisterComponent},
   {path: '404', component:NotfoundComponent},
