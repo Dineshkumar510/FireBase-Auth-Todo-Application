@@ -18,7 +18,7 @@ Login(email: string, password: string) {
   this.afAuth.signInWithEmailAndPassword(email, password).then(()=> {
     const user = new User(email, password)
     localStorage.setItem('token', 'value');
-    this.router.navigate(['/todo']);
+    this.router.navigate(['/profile']);
     this.user.next(user);
   }, err => {
     alert("Something Went Wrong" + " " + err.message);
@@ -41,6 +41,7 @@ signUp(email: string, password: string){
 signOut(){
   return this.afAuth.signOut().then(()=>{
     localStorage.removeItem('token');
+    localStorage.removeItem('TotalDetails');
     this.user.next(null!);
     //this.user = JSON.parse(localStorage.getItem('token')!)
     this.router.navigate(['/login'], { skipLocationChange: true });

@@ -1,0 +1,202 @@
+<div class="container">
+
+  <div class="row height d-flex justify-content-center align-items-center">
+
+    <div class="col-md-4">
+      <div class="search">
+        <i class="fa fa-search"></i>
+        <input type="text" class="form-control" placeholder="Search by Name" [(ngModel)]="searchTerm">
+        <button class="btn btn-primary">Search</button>
+      </div>
+    </div>
+
+    </div>
+
+  </div>
+
+<div class="content mt-3">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-3" *ngFor="let data of assignedValue?.results | searchfilter: searchTerm">
+                <div class="text-center card-box">
+                    <div class="member-card pt-2 pb-2">
+
+                        <div class="thumb-lg member-thumb containers mx-auto">
+                          <img src={{data.picture?.large}} class="rounded-circle img-thumbnail" alt="profile-image">
+                          <div class="overlay">
+                            <span class="icon" title="{{data.name?.first}}" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            style="text-decoration: none">
+                              <i class="fa fa-user" (click)="storeData(data)"></i>
+                            </span>
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <h4>
+                              <span class="label label-primary">
+                                {{data.name?.first + " " + data.name?.last}}
+                              </span>
+                            </h4>
+                            <p class="text-muted">@ {{data.location?.state}}
+                              <span>
+                                <a href="#" class="text-pink">{{data?.email}}</a>
+                              </span>
+                            </p>
+                        </div>
+
+                        <div class="country mb-3">
+                          <h4>{{data.location?.country}}</h4>
+                        </div>
+
+                        <ul class="social-links list-inline">
+                            <li class="list-inline-item">
+                              <a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href="javascript:void(0)" data-original-title="Facebook">
+                                <i class="fa fa-facebook"></i>
+                              </a>
+                            </li>
+
+                            <li class="list-inline-item">
+                              <a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href="javascript:void(0)" data-original-title="Twitter">
+                                <i class="fa fa-twitter"></i>
+                              </a>
+                            </li>
+
+                            <li class="list-inline-item">
+                              <a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href="javascript:void(0)" data-original-title="Skype">
+                                <i class="fa fa-skype"></i>
+                              </a>
+                            </li>
+                        </ul>
+
+                        <button type="button" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light">Message Now</button>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+              <!-- <ngb-pagination [collectionSize]="70" [(page)]="page" aria-label="Default pagination"></ngb-pagination> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--Modal Details-->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content" *ngIf="mainData">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">
+          <b>{{mainData.name?.first + ' ' + mainData.name?.last}}</b>
+        </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">User ID</label>
+                        <input type="text" class="form-control" id="recipient-name"
+                        value="{{mainData.login?.uuid}}" readonly>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">User Name</label>
+                        <input type="text" class="form-control" id="recipient-name"
+                        value="{{mainData.login?.username}}" readonly>
+                      </div>
+                    </div>
+                    <div class="col-md-3 mt-2">
+                      <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Full Name</label>
+                        <input type="text" class="form-control" id="recipient-name"
+                        value="{{mainData.name?.first + ' ' + mainData.name?.last}}"
+                        readonly>
+                      </div>
+                    </div>
+                      <div class="col-md-3 mt-2">
+                        <div class="form-group">
+                          <label for="recipient-name" class="col-form-label">Location</label>
+                          <input type="text" class="form-control" id="recipient-name" value="{{mainData.location?.state + ' ' + '-' + ' ' + mainData.location?.country}}"
+                          readonly>
+                        </div>
+                      </div>
+                       <div class="col-md-3 mt-2">
+                        <div class="form-group">
+                          <label for="recipient-name" class="col-form-label">Phone-Number</label>
+                          <input type="text" class="form-control" id="recipient-name"
+                          value="{{mainData.phone}}" readonly>
+                        </div>
+                      </div>
+                      <div class="col-md-3 mt-2">
+                        <div class="form-group">
+                          <label for="recipient-name" class="col-form-label">Date of Birth</label>
+                          <input type="text" class="form-control" id="recipient-name"
+                          value="{{mainData.dob?.date | date}}" readonly>
+                        </div>
+                      </div>
+                      <div class="col-md-6 mt-2">
+                        <div class="form-group">
+                          <label for="recipient-name" class="col-form-label">Email</label>
+                          <input type="text" class="form-control" id="recipient-name"
+                          value="{{mainData.email}}" readonly>
+                        </div>
+                      </div>
+
+
+                      <div class="col-md-2 mt-2">
+                        <div class="form-group">
+                          <label for="recipient-name" class="col-form-label">Age</label>
+                          <input type="text" class="form-control" id="recipient-name"
+                          value="{{mainData.dob?.age}}" readonly>
+                        </div>
+                      </div>
+                      <div class="col-md-2 mt-2">
+                        <div class="form-group">
+                          <label for="recipient-name" class="col-form-label">Gender</label>
+                          <input type="text" class="form-control" id="recipient-name"
+                          value="{{mainData.gender}}" readonly>
+                        </div>
+                      </div>
+                      <div class="col-md-2 mt-2">
+                        <div class="form-group">
+                          <label for="recipient-name" class="col-form-label">PostCode</label>
+                          <input type="text" class="form-control" id="recipient-name"
+                          value="{{mainData.location?.postcode}}" readonly>
+                        </div>
+                      </div>
+                      <div class="col-md-12 mt-2">
+                        <div class="form-group">
+                          <label for="recipient-name" class="col-form-label">Profile Picture</label>
+                          <input type="text" class="form-control shadow-none" id="myInput"
+                          value="{{mainData.picture?.large}}">
+                          <div class="copy-btn">
+                              <button class="btn btn-dark copy-btn shadow-none" (click)="CopyText()">
+                                <i class="fa fa-copy"></i>
+                              </button>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="modal-footer" style="border-top: 0;">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
