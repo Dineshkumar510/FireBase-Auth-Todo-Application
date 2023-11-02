@@ -1,6 +1,10 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ProfileService } from '../profile/profile.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { ToastserviceService } from '../../toastservice.service';
+import { map } from 'rxjs/operators';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -13,6 +17,7 @@ export class ProfileComponent implements OnInit {
   items: any[] = [];
   itemsPerPage = 10;
   data: any[] = [];
+  config: any;
   mainData:any;
   searchTerm:any;
   searchCriteria: any = {
@@ -29,7 +34,22 @@ export class ProfileComponent implements OnInit {
   constructor(
     private ProfileService: ProfileService,
     private http: HttpClient,
-  ) { }
+    private toast: ToastserviceService,
+    private router: Router,
+    private route: ActivatedRoute
+  )
+  {
+    this.config = {
+      currentPage: 1,
+      itemsPerPage: 8
+    };
+
+    this.route.queryParamMap
+    .pipe(
+      map((params: any) => params.get('page'))
+    )
+    .subscribe((page: any) => (this.config.currentPage = page))
+  }
 
   ngOnInit(): void {
     this.loadMoreResults();
@@ -37,7 +57,7 @@ export class ProfileComponent implements OnInit {
 
   loadMoreResults() {
     this.loading = true;
-    this.ProfileService.getMoreResults({ results: 20 }).subscribe(
+    this.ProfileService.getMoreResults({ results: 100 }).subscribe(
       (data: any) => {
       //this.resultData = data.results;
       this.assignedValue = data;
@@ -72,5 +92,16 @@ export class ProfileComponent implements OnInit {
     copyText.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(copyText.value);
    }
+
+   shareBtn(){
+    this.toast.openInfo();
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/profile-id']));
+      window.open(url, '_blank');
+   }
+
+   pageChange(newPage: number) {
+    this.router.navigate([""], { queryParams: { page: newPage } });
+  }
 
 }

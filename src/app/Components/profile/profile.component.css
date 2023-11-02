@@ -2,7 +2,17 @@
   padding: 20px;
   border-radius: 3px;
   margin-bottom: 30px;
-  background-color: #fff;
+  background-color: #adadad54;
+}
+
+.card-box:hover{
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.country{
+  color:#fff;
 }
 
 .social-links li a {
@@ -172,4 +182,93 @@ h4 {
   }
 
 
+  .my-pagination{
+    float: right;
+  }
 
+
+  /* Like Button */
+
+  .action-buttons{
+    padding: 10px;
+    border: 1px solid #99999936;
+    border-radius: 4px;
+  }
+
+  .containered input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .containered {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    font-size: 12px;
+    user-select: none;
+    transition: 100ms;
+  }
+
+  .checkmark {
+    top: 0;
+    left: 0;
+    height: 2em;
+    width: 2em;
+    transition: 100ms;
+    animation: dislike_effect 400ms ease;
+    display: inline-block;
+  }
+
+  .context-value{
+    margin-left: 4px;
+    font-size: 13px !important;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    display: inline-flex;
+  }
+
+  .containered input:checked ~ .checkmark path {
+    fill: #FF5353;
+    stroke-width: 0;
+  }
+
+  .containered input:checked ~ .checkmark {
+    animation: like_effect 400ms ease;
+  }
+
+  /* .containered:hover {
+    transform: scale(1.1);
+  } */
+
+  @keyframes like_effect {
+    0% {
+      transform: scale(0);
+    }
+
+    50% {
+      transform: scale(1.2);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes dislike_effect {
+    0% {
+      transform: scale(0);
+    }
+
+    50% {
+      transform: scale(1.2);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
+  /* Like Button - ends */

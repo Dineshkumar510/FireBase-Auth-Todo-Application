@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { ReplaySubject, Subject } from 'rxjs';
 import {User} from './user.model'
+import { ToastserviceService } from '../toastservice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,11 @@ export class AuthService {
 
    user: Subject<User> = new ReplaySubject<User>(1);
 
-constructor(private afAuth: AngularFireAuth, private router: Router) { }
+constructor(
+  private afAuth: AngularFireAuth,
+  private router: Router,
+  private toast : ToastserviceService,
+  ) { }
 
 
 Login(email: string, password: string) {
@@ -21,7 +26,8 @@ Login(email: string, password: string) {
     this.router.navigate(['/profile']);
     this.user.next(user);
   }, err => {
-    alert("Something Went Wrong" + " " + err.message);
+    this.toast.openError(err.message)
+    //alert("Something Went Wrong" + " " + err.message);
     this.router.navigate(['/login']);
   });
 }
@@ -31,7 +37,8 @@ signUp(email: string, password: string){
     alert("Registration Successfull");
     this.router.navigate(['/login']);
   }, err => {
-    alert(err.message);
+    this.toast.openError(err.message)
+    //alert(err.message);
     this.router.navigate(['/register']);
   })
 }
@@ -46,7 +53,8 @@ signOut(){
     //this.user = JSON.parse(localStorage.getItem('token')!)
     this.router.navigate(['/login'], { skipLocationChange: true });
   }, error => {
-    alert(error.message);
+    this.toast.openError(error.message)
+    //alert(error.message);
   });
 }
 

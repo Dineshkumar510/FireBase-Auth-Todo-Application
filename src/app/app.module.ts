@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -21,7 +21,10 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { FilterPipe } from './pipes/filter.pipe';
 import { SearchfilterPipe } from './pipes/searchfilter.pipe';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
-
+import {NgToastModule} from 'ng-angular-popup';
+import { ToastserviceService } from '../app/toastservice.service';
+import { MainProfileComponent } from './Components/main-profile/main-profile.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,11 +34,14 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     NotfoundComponent,
     ProfileComponent,
     FilterPipe,
-    SearchfilterPipe
+    SearchfilterPipe,
+    MainProfileComponent
   ],
   imports: [
     BrowserModule,
     NgbModule,
+    NgToastModule,
+    NgxPaginationModule,
     AppRoutingModule,
     FormsModule,
     NgbPaginationModule,
@@ -46,7 +52,10 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     provideDatabase(() => getDatabase()),
     provideFirestore(() => getFirestore())
   ],
-  providers: [ProfileService, AuthGuard],
-  bootstrap: [AppComponent]
+  providers: [ProfileService, AuthGuard, ToastserviceService],
+  bootstrap: [AppComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ],
 })
 export class AppModule { }

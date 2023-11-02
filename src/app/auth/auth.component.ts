@@ -13,10 +13,15 @@ export class AuthComponent implements OnInit {
   // email: string = '';
   // password: string = '';
 
+  password:any;
+  show:boolean = false;
+
   constructor(private auth: AuthService) { }
 
   ngOnInit(): void {
+    this.password = 'password';
   }
+
 
   onSubmit(form:NgForm){
     if(!form.valid){
@@ -27,6 +32,16 @@ export class AuthComponent implements OnInit {
     this.auth.Login(email, password);
     console.log(form.value);
     form.reset();
+  }
+
+   onClick() {
+    if (this.password === 'password') {
+      this.password = 'text';
+      this.show = true;
+    } else {
+      this.password = 'password';
+      this.show = false;
+    }
   }
 
 

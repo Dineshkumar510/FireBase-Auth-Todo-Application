@@ -12,10 +12,16 @@
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control" name="password" ngModel required minlength="6">
+                    <input [type]="password" class="form-control" name="password" ngModel required minlength="6">
+                    <button class="btn shadow-none" type="button" (click)="onClick()"
+                    style="position: absolute; right: 5%; bottom: 34%;">
+                      <i class="fa fa-eye" aria-hidden="true" *ngIf="!show"></i>
+                      <i class="fa fa-eye-slash" aria-hidden="true" *ngIf="show"></i>
+                    </button>
                   </div>
                   <div class="button center-content">
-                    <button type="submit" class="btn btn-primary" [disabled]="!authForm.valid">Login</button>
+                    <button type="submit" class="btn btn-primary" [ngStyle]="{'cursor': !authForm.valid ? 'not-allowed' : 'pointer'}"
+                    [disabled]="!authForm.valid">Login</button>
                   </div>
                   <div class="center-content mt-3">
                     <p>Not Register Yet? <a href="/register">Register</a></p>

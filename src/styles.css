@@ -1,5 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+/* @import url(//fonts.googleapis.com/css?family=Lato:600:600); */
+
 body{
-  background:linear-gradient(90deg ,#87BFBB,#4164A3,#43C2BA );
-  font-family: Poppins, sans-serif
+  background: #4b5163;  /* fallback for old browsers */
+  font-family: 'Lato', sans-serif;
 }

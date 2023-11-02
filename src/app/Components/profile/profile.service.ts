@@ -9,9 +9,6 @@ import { Observable } from 'rxjs';
 })
 export class ProfileService {
 
-  private resultsPerPage = 10;
-  private currentPage = 1;
-
   private apiUrl = 'https://randomuser.me/api';
 
   //private dataUrl = '../../../assets/data.json';
@@ -22,7 +19,6 @@ export class ProfileService {
 getMoreResults(params: { results: number }): Observable<any> {
   const { results } = params;
   const url = `${this.apiUrl}?results=${results}`;
-  //const url = `${this.apiUrl}?page=${this.currentPage}&results=${page}`;
   return this.http.get(url);
 }
 
