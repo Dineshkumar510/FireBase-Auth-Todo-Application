@@ -24,6 +24,7 @@ export class ProfileComponent implements OnInit {
     gender: '',
     nat: ''
   };
+  userId:any;
 
   resultData: any[] = [];
   assignedValue:any;
@@ -65,25 +66,13 @@ export class ProfileComponent implements OnInit {
     this.loading = true;
   }
 
-
-  // @HostListener('window:scroll', ['$event'])
-  // onScroll() {
-  //   if (
-  //     window.innerHeight + window.scrollY >= document.body.offsetHeight - 100
-  //   ) {
-  //     this.loadMoreResults();
-  //   }
-  // }
-
   storeData(data:any){
     localStorage.setItem('TotalDetails', JSON.stringify(data));
-    console.log(data);
-    this.loaddata();
-  }
-
-  loaddata(){
     let Details:any = localStorage.getItem('TotalDetails');
     this.mainData = JSON.parse(Details);
+   if(this.mainData){
+    this.userId = this.mainData.login?.uuid;
+   }
   }
 
    CopyText() {
@@ -96,7 +85,7 @@ export class ProfileComponent implements OnInit {
    shareBtn(){
     this.toast.openInfo();
     const url = this.router.serializeUrl(
-      this.router.createUrlTree(['/profile-id']));
+      this.router.createUrlTree([`profile/PersonDetails/${this.userId}`]));
       window.open(url, '_blank');
    }
 

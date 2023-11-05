@@ -175,6 +175,11 @@ h4 {
   }
 
 
+  .button-right{
+    display: flex;
+    justify-content: end;
+  }
+
   .copy-btn{
     position: absolute;
     top: 85%;

@@ -12,7 +12,7 @@ const routes: Routes = [
   {path: 'todo', component:TodoComponent, canActivate: [AuthGuard]},
   // canActivate: [AuthGuard]
   {path: 'profile', component:ProfileComponent},
-  {path: 'profile-id', component: MainProfileComponent},
+  {path: 'profile/PersonDetails/:id', component: MainProfileComponent},
   {path: 'login', component:AuthComponent},
   {path: 'register', component:RegisterComponent},
   {path: '404', component:NotfoundComponent},
