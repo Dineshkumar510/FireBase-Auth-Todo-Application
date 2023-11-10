@@ -25,6 +25,7 @@ import {NgToastModule} from 'ng-angular-popup';
 import { ToastserviceService } from '../app/toastservice.service';
 import { MainProfileComponent } from './Components/main-profile/main-profile.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { PhoneformatPipe } from './pipes/phoneformat.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +36,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ProfileComponent,
     FilterPipe,
     SearchfilterPipe,
-    MainProfileComponent
+    MainProfileComponent,
+    PhoneformatPipe
   ],
   imports: [
     BrowserModule,

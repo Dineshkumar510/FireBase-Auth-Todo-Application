@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 })
 export class ProfileService {
 
+  Params = { key1: 'value1', key2: 'value2'};
+
   private apiUrl = 'https://randomuser.me/api';
 
   //private dataUrl = '../../../assets/data.json';

@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { ProfileService } from '../profile/profile.service';
 import { HttpClient } from '@angular/common/http';
 import { ToastserviceService } from '../../toastservice.service';
@@ -17,6 +17,8 @@ export class ProfileComponent implements OnInit {
   items: any[] = [];
   itemsPerPage = 10;
   data: any[] = [];
+  LikeBtn:any;
+  assignedValue:any;
   config: any;
   mainData:any;
   searchTerm:any;
@@ -25,9 +27,7 @@ export class ProfileComponent implements OnInit {
     nat: ''
   };
   userId:any;
-
   resultData: any[] = [];
-  assignedValue:any;
   filteredStatus:any;
   loading: boolean = false;
 
@@ -60,6 +60,7 @@ export class ProfileComponent implements OnInit {
     this.loading = true;
     this.ProfileService.getMoreResults({ results: 100 }).subscribe(
       (data: any) => {
+        console.log(data);
       //this.resultData = data.results;
       this.assignedValue = data;
     });
@@ -75,7 +76,7 @@ export class ProfileComponent implements OnInit {
    }
   }
 
-   CopyText() {
+   CopyText(){
     var copyText = document.getElementById("myInput") as HTMLInputElement;
     copyText.select();
     copyText.setSelectionRange(0, 99999);
@@ -85,11 +86,18 @@ export class ProfileComponent implements OnInit {
    shareBtn(){
     this.toast.openInfo();
     const url = this.router.serializeUrl(
-      this.router.createUrlTree([`profile/PersonDetails/${this.userId}`]));
+      this.router.createUrlTree([`profile/PersonDetails/${this.userId}`], { queryParams: { jwt: '123'}}));
       window.open(url, '_blank');
    }
 
-   pageChange(newPage: number) {
+   PostLikeBtn(event:any){
+    if(event){
+      this.LikeBtn = event;
+      console.log(this.LikeBtn);
+    }
+   }
+
+   pageChange(newPage: number){
     this.router.navigate([""], { queryParams: { page: newPage } });
   }
 
