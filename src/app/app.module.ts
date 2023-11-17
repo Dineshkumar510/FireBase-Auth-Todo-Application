@@ -11,6 +11,7 @@ import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { RegisterComponent } from './register/register.component';
 import {AngularFireModule} from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { ProfileComponent } from './Components/profile/profile.component';
 import {ProfileService} from './Components/profile/profile.service';
@@ -26,6 +27,18 @@ import { ToastserviceService } from '../app/toastservice.service';
 import { MainProfileComponent } from './Components/main-profile/main-profile.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PhoneformatPipe } from './pipes/phoneformat.pipe';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyB7le4SR7cgUEzhUXVJP8YojWxSgioMZwM',
+  authDomain: 'angular---todo-interview-test.firebaseapp.com',
+  projectId: 'angular---todo-interview-test',
+  storageBucket: 'angular---todo-interview-test.appspot.com',
+  messagingSenderId: '50694461987',
+  appId: '1:50694461987:web:04c0ac36eb4f4805a6ef96',
+};
+
+production: false
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,11 +61,8 @@ import { PhoneformatPipe } from './pipes/phoneformat.pipe';
     FormsModule,
     NgbPaginationModule,
     HttpClientModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth()),
-    provideDatabase(() => getDatabase()),
-    provideFirestore(() => getFirestore())
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule,
   ],
   providers: [ProfileService, AuthGuard, ToastserviceService],
   bootstrap: [AppComponent],
