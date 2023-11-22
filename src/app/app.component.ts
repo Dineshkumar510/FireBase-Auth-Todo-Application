@@ -15,11 +15,11 @@ constructor(private auth: AuthService){
 }
 
 
-
 ngOnInit(): void {
   this.userSub = this.auth.user.subscribe(user => {
     this.isAuthenticated = !user ? false : true
   })
+  this.auth.autoLogin();
 }
 
     signOut(){

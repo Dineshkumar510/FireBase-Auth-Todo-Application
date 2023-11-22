@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject, Subject, catchError, tap, throwError } from 'rxjs';
 import {User} from './user.model'
 import { ToastserviceService } from '../toastservice.service';
-import { Observable } from 'rxjs';
-import { async } from '@angular/core/testing';
+import { HttpClient} from '@angular/common/http';
 
 export interface AuthResponseData {
+  kind: string;
   idToken: string;
   email: string;
   refreshToken: string;
@@ -22,90 +21,123 @@ export interface AuthResponseData {
 export class AuthService {
 
     user: Subject<User> = new ReplaySubject<User>(1);
-    tokenexpirationTimer : any;
-    //user$: Observable<firebase.default.User | null>;
-
-// constructor(
-//   private afAuth: AngularFireAuth,
-//   private router: Router,
-//   private toast : ToastserviceService,
-//   ) { }
-
+    private tokenexpirationTimer : any;
 
   constructor(
-    private afAuth: AngularFireAuth,
     private router: Router,
-    private toast : ToastserviceService
-    ) {
-    this.afAuth.authState.subscribe((user) => {
-      if (user) {
-        // User is signed in.
-        user.getIdTokenResult().then((idTokenResult) => {
-          // idTokenResult.expirationTime contains the expiration time in milliseconds
-          const expiresInMilliseconds:any = idTokenResult.expirationTime;
-          console.log('Token expires in:', expiresInMilliseconds, 'milliseconds');
+    private toast : ToastserviceService,
+    private http: HttpClient,
+    ) {}
 
-          // You can convert milliseconds to a human-readable format if needed
-          const expiresInInSeconds = expiresInMilliseconds / 1000;
-          console.log('Token expires in:', expiresInInSeconds, 'seconds');
-        });
-      } else {
-        // User is signed out.
-      }
-    });
+
+
+    authSignUpKey = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDTK-o70cL6j-G9HwLAnIK50z375P-Humk';
+
+    authLoginKey = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDTK-o70cL6j-G9HwLAnIK50z375P-Humk';
+
+
+    signUp(email: string, password: string){
+        return this.http.post<AuthResponseData>(this.authSignUpKey,
+          {
+            email: email,
+            password: password,
+            returnSecureToken: true
+          }
+        ).pipe(catchError(errorRes => {
+          let ErrorMessage = 'An Unknow error occurred';
+          if(!errorRes.error || !errorRes.error.error){
+            return throwError(ErrorMessage);
+          }
+            switch(errorRes.error.error.message) {
+              case 'EMAIL_EXISTS':
+                ErrorMessage = 'This Email is Already Exists';
+                this.toast.openError(ErrorMessage);
+                break;
+              case 'INVALID_LOGIN_CREDENTIALS':
+                ErrorMessage = 'Email Or PassWord does not match in the DataBase';
+                this.toast.openError(ErrorMessage);
+                break;
+            }
+            return throwError(ErrorMessage)
+        }),
+        tap(resData => {
+          this.handleAuthenication(resData.email, resData.localId, resData.idToken, +resData.expiresIn)
+        })
+      );
+    }
+
+
+
+    Login(email: string, password: string) {
+        return this.http.post<AuthResponseData>(this.authLoginKey,
+        {
+          email: email,
+          password: password,
+          returnSecureToken: true
+        }
+      ).pipe(catchError(errorRes => {
+        let ErrorMessage = 'An Unknow error occurred';
+        if(!errorRes.error || !errorRes.error.error){
+          return throwError(ErrorMessage);
+        }
+          switch(errorRes.error.error.message) {
+            case 'EMAIL_EXISTS':
+              ErrorMessage = 'This Email is Already Exists';
+              this.toast.openError(ErrorMessage);
+              break;
+            case 'INVALID_LOGIN_CREDENTIALS':
+              ErrorMessage = 'Email Or PassWord does not match in the DataBase';
+              this.toast.openError(ErrorMessage);
+              break;
+          }
+          return throwError(ErrorMessage)
+      }),
+      tap(resData => {
+        this.handleAuthenication(resData.email, resData.localId, resData.idToken, +resData.expiresIn);
+        console.log(resData.email, resData.localId, resData.idToken, +resData.expiresIn);
+        this.router.navigate(['/profile']);
+      })
+    );
   }
 
 
-// Login(email: string, password: string) {
-//  async this.afAuth.signInWithEmailAndPassword(email, password).then(()=> {
-//     const user = new User(email, password)
-//     localStorage.setItem('token', 'value');
-//     this.router.navigate(['/profile']);
-//     this.user.next(user);
+
+
+//   async Login(email:string, password:string) {
+//     const result = this.afAuth.signInWithEmailAndPassword(email, password);
+//     const user:any|null = (await result).user;
+//       if(user){
+//         user.getIdTokenResult().then(async (idTokenResult:any) => {
+//           const expirationTime = idTokenResult.expirationTime;
+//           var ElementTime = new Date(expirationTime).getTime();
+//           this.handleAuthenication(user.email, user.uid, await user.getIdToken(), ElementTime)
+//           console.log(user.email, user.uid,  await user.getIdToken(), ElementTime)
+//           localStorage.setItem('UserSessionData', JSON.stringify(user))
+//           this.router.navigate(['/profile']);
+//           this.user.next(user);
+//         });
+
+//       }
+//    }
+//     catch (error:any) {
+//     this.toast.openError(error.message);
+//     this.router.navigate(['/login']);
+//   }
+
+
+// signUp(email: string, password: string){
+//   this.afAuth.createUserWithEmailAndPassword(email, password).then(()=>{
+//     alert("Registration Successfull");
+//     this.router.navigate(['/login']);
 //   }, err => {
 //     this.toast.openError(err.message)
-//     //alert("Something Went Wrong" + " " + err.message);
-//     this.router.navigate(['/login']);
-//   });
+//     //alert(err.message);
+//     this.router.navigate(['/register']);
+//   })
 // }
 
-  async Login(email:string, password:string) {
-    const result = this.afAuth.signInWithEmailAndPassword(email, password);
-    const user:any|null = (await result).user;
-    console.log("User Data", user);
-    const idTokenResult = await user.getIdTokenResult();
-    const expirationTime:any = idTokenResult.expirationTime;
-    this.handleAuthenication(user.email, user.uid, await user.getIdToken(), user._delegate.stsTokenManager.expirationTime)
-    //console.log(user.email, user.uid,  await user.getIdToken(), user._delegate.stsTokenManager.expirationTime)
-    // console.log('ID Token:', await user.getIdToken());
-    // console.log('Email:', user.email);
-    // console.log('Refresh Token:', user.refreshToken);
-    // console.log('Expires In:', user.expiresIn);
-    // console.log('Local ID:', user.uid);
-    // console.log('Registered:', user.emailVerified);
 
-    localStorage.setItem('UserSessionData', JSON.stringify(user))
-     this.router.navigate(['/profile']);
-     this.user.next(user);
-   }
-    catch (error:any) {
-    this.toast.openError(error.message);
-    this.router.navigate(['/login']);
-  }
-
-
-signUp(email: string, password: string){
-  this.afAuth.createUserWithEmailAndPassword(email, password).then(()=>{
-    alert("Registration Successfull");
-    this.router.navigate(['/login']);
-  }, err => {
-    this.toast.openError(err.message)
-    //alert(err.message);
-    this.router.navigate(['/register']);
-  })
-}
-
-
+// Storing the User Session Data in Local Storage and retriving the User ib UserSessionData element
 autoLogin(){
   const userData : {
     email: string,
@@ -128,20 +160,18 @@ autoLogin(){
 
 
 signOut(){
-  return this.afAuth.signOut().then(()=>{
-    localStorage.removeItem('UserSessionData');
-    localStorage.removeItem('TotalDetails');
+    if(this.user){
+    localStorage.clear();
     this.user.next(null!);
     //this.user = JSON.parse(localStorage.getItem('token')!)
-    this.router.navigate(['/login'], { skipLocationChange: true });
+    this.router.navigate(['/login']);
     if(this.tokenexpirationTimer){
       clearTimeout(this.tokenexpirationTimer);
     }
     this.tokenexpirationTimer = null;
-  }, error => {
-    this.toast.openError(error.message)
-  });
-}
+    }
+  }
+
 
 autoLogOut(expirationDuration : number){
   this.tokenexpirationTimer = setTimeout(()=>{
@@ -150,11 +180,12 @@ autoLogOut(expirationDuration : number){
 }
 
  handleAuthenication(email: string, uid: string, token: string, expiresIn:any){
-  const exiprationDate = new Date(new Date().getTime() + expiresIn * 1000);
-  const user = new User(email, uid, token, exiprationDate);
-  this.user.next(user);
-  localStorage.setItem('UserSessionData', JSON.stringify(user));
-  console.log(email, uid, token, exiprationDate);
+    const exiprationDate = new Date(new Date().getTime() + expiresIn * 1000);
+    const user = new User(email, uid, token, exiprationDate);
+    this.user.next(user);
+    this.autoLogOut(expiresIn * 1000);
+    localStorage.setItem('UserSessionData', JSON.stringify(user));
+    console.log(email, uid, token, exiprationDate);
   }
 
 }

@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { ProfileService } from '../profile/profile.service';
-import { Subscription, map } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-main-profile',
   templateUrl: './main-profile.component.html',
@@ -17,9 +16,7 @@ export class MainProfileComponent implements OnInit, OnDestroy {
 
   private routeSub: Subscription;
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
-    private ProfileService: ProfileService,
   ) {}
 
   ngOnInit(): void {
@@ -33,8 +30,7 @@ export class MainProfileComponent implements OnInit, OnDestroy {
   getLocalData(){
     let userDetails:any = localStorage.getItem('TotalDetails');
     this.particularRecord = JSON.parse(userDetails);
-    if(this.particularRecord){
-      this.particularRecord.login.uuid == this.ownId;
+    if(this.particularRecord.login.uuid == this.ownId){
       this.mainData = this.particularRecord;
     }
   }

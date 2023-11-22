@@ -1,7 +1,14 @@
 <div class="container">
 
-  <div class="row height d-flex justify-content-center align-items-center">
+  <div class="row">
+      <div class="col-md-12">
+          <div class="UserName">
+              <span style="color: #fff; font-size: 20px;">Welcome : {{UserName}}</span>
+          </div>
+      </div>
+  </div>
 
+  <div class="row height d-flex justify-content-center align-items-center">
     <div class="col-md-4">
       <div class="search">
         <i class="fa fa-search"></i>
@@ -99,8 +106,13 @@
             </div>
 
         </div>
-
-        <pagination-controls (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+              <pagination-controls (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
+            </div>
+        </div>
     </div>
 </div>
 

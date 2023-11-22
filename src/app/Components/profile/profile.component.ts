@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { ProfileService } from '../profile/profile.service';
 import { HttpClient } from '@angular/common/http';
 import { ToastserviceService } from '../../toastservice.service';
@@ -30,6 +30,7 @@ export class ProfileComponent implements OnInit {
   resultData: any[] = [];
   filteredStatus:any;
   loading: boolean = false;
+  UserName:any;
 
 
   constructor(
@@ -54,6 +55,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMoreResults();
+    this.UserName = JSON.stringify(localStorage.getItem('userName'))
   }
 
   loadMoreResults() {
@@ -84,7 +86,7 @@ export class ProfileComponent implements OnInit {
    }
 
    shareBtn(){
-    this.toast.openInfo();
+    //this.toast.openInfo();
     const url = this.router.serializeUrl(
       this.router.createUrlTree([`profile/PersonDetails/${this.userId}`], { queryParams: { jwt: '123'}}));
       window.open(url, '_blank');
@@ -98,7 +100,7 @@ export class ProfileComponent implements OnInit {
    }
 
    pageChange(newPage: number){
-    this.router.navigate([""], { queryParams: { page: newPage } });
+    this.router.navigate(["/profile"], { queryParams: { page: newPage } });
   }
 
 }

@@ -7,6 +7,11 @@
                 <h4 class="center-content my-4">Register Form</h4>
                 <form #registerForm="ngForm" (ngSubmit)="OnRegister(registerForm)">
                   <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">UserName</label>
+                    <input type="text" class="form-control" name="name" ngModel required>
+                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                  </div>
+                  <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Email address</label>
                     <input type="email" class="form-control" name="email" ngModel required email>
                     <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
@@ -20,7 +25,8 @@
                     <input type="password" class="form-control" name="confirmPassword" ngModel required>
                   </div>
                   <div class="button center-content">
-                    <button type="submit" class="btn btn-primary" [disabled]="!registerForm.valid">SignUp</button>
+                    <button type="submit" class="btn btn-primary"  [ngStyle]="{'cursor': !registerForm.valid ? 'not-allowed' : 'pointer'}"
+                    [disabled]="!registerForm.valid">SignUp</button>
                   </div>
                   <div class="center-content mt-3">
                     <p>Already Register? <a href="/login">login</a></p>
